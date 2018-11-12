@@ -1,0 +1,141 @@
+I>Vai trò của Unit Test
+
+Unit test có thể làm tăng đáng kể chất lượng dự án của chúng ta, nhưng với một điều kiện là unit test được viết một cách hợp lý và có vai trò nhất quán, rõ ràng. Nếu không, unit test sẽ lấy mất rất nhiều công sức của team mà không mang lại rất ít giá trị và rất khó để có thể nhận ra mục đích của những method unit test như vậy hoặc có thể đơn giản là nó chả có mục đích gì hết, việc tìm hiểu nó chỉ là phí công mà thôi.
+
+
+Hầu như tất cả mọi cố gắng của tôi là làm sao cho tất cả các test case đều xanh. Nhưng mục đích của unit test không phải là như vậy, hãy viết unit test sao cho mọi việc của bạn là modify source code implement chứ không phải là nỗ lực chỉnh sửa code test. Nhìn thấy test case fail mới chính là điều chúng ta mong đợi từ unit test, điều đó có nghĩa là unit test của chúng ta đã hoạt động và thực sự có ý nghĩa. Chúng ta nên vui mừng vì điều đó, qua unit test fail chúng ta nhận thấy rõ ràng có sự sai sót trong code implement và có thể nhanh chóng fix nó tại bước unit test này.
+
+Còn trường hợp thứ hai là chúng ta nhận được phản hồi về sai sót của chương trình từ người khác. Hãy kiểm tra lại test case của class test liên quan, bổ sung unit test còn thiếu và sau đó là run lại method test với hy vọng là test method sẽ fail. Vì như thế bug của chương trình sẽ được khoanh vùng lại tại method test của unit test thôi và một bug unit test sẽ đơn giản hơn rất nhiều một bug từ intergration test.
+
+=> Màu đỏ trong unit test mới chính là thứ chúng ta mong chờ nhiều nhất từ unit test. Vậy mục tiêu của unit test là gì?
+
+
+Có vẻ mục đích đưa ra không liên quan gì nhiều đến từ "unit test", nhưng qua công việc, tôi thấy rằng đây mới chân chính là mục đích chân chính của việc viết unit test. Chúng tôi làm việc theo mô hình TDD, lên unit test luôn được ưu tiên viết trước khi implement code. Điều đó có nghĩa rằng chúng tôi cần hình dung ra code unit test trong quá trình thiết kế source code, chứ không phải trong quá trình test.
+
+Unit test cần được viết base trên các ý có trong spec requirement, từ các phân tích spec, chúng ta define ra các thành phần phần mềm, các class, interface v.v.. cần thiết và các logic tương tác giữa các unit này được chuyển từ mô tả trong spec sang test case method trong unit test.
+
+
+Yêu cầu tối thiểu của unit test là không được để sót các ý có sẵn trong spec. Một khi chúng ta đã đạt được yêu cầu tối thiểu của unit test tức là đã đạt được mục tiêu đầu tiên đó là verify, xác định chính xác source code đã tuân theo requirement được yêu cầu.
+
+Và đương nhiên, unit test cũng cần phải được modify, chỉnh sửa mỗi khi có sự thay đổi của requirement liên quan. Hãy đảm bảo các bug hướng chức năng của chương trình luôn được cập nhật vào code unit test vì khi có bug liên quan đến chức năng chương trình, chúng ta luôn phải confirm lại về spec và việc add thêm hoặc chỉnh sửa các test case liên quan là cần thiết. Một khi unit test không bám sát được spec, thì đó chính là unit test chết, nó sẽ mất dần ý nghĩa tồn tại của chinh bản thân code test.
+
+
+Khi làm việc theo mô hình TDD, việc viết unit test chính là định hướng căn bản cho việc detail design của chương trình. Tôi sử dụng behavior test case method để xác định khung chương trình trước khi bắt tay vào implement code thực thi.
+
+Việc này có một ưu điểm rất nổi bật đó là giữ cho design luôn luôn đơn giản và dễ hiểu. Vì bạn không thể viết một đoạn mã code unit test lằng nhằng được khi công việc đó luôn được thực thi trước khi viết code implement. => Vậy là bạn luôn luôn phải tuân theo nguyên tắc thứ nhất KISS.
+Ưu điểm thứ hai là code luôn luôn bám sát spec, bạn sẽ không viết bất kỳ dòng code nào mà không có yêu cầu được đưa ra. Tại sao vậy? Đơn giản vì unit test dựa trên spec và nó được viết trước code implement -> bạn chẳng thể có cơ hội nào để chèn thêm những thứ nào khác ngoài spec cả. => Bạn đã bị ép buộc tuân theo nguyên tắc thứ hai YAGNI.
+Viết method tuân thủ theo Single Responsibility Principle - “Một class - một method chỉ được có 1 nhiệm vụ”, bạn sẽ gặp rất nhiều khó khăn khi viết unit test mà không tuân theo nguyên tắc trên. Vì với unit test, bạn cần viết test cho một logic, một nhiệm vụ duy nhất trong một case. Đừng đi ngược chiều chảy của dòng nước, nếu bạn cố viết những method với hơn 1 nhiệm vụ, bạn sẽ gặp khó khăn rất lớn với unit test của chúng đấy.
+=> Theo một cách rất tự nhiên, unit test đã định hướng detail desin của class implement tuân theo một số nguyên tắc cơ bản và khiến code trở lên thông thoáng và dễ hiểu hơn rất nhiều.
+
+Xuất phát từ lý do unit test chính là sự thể hiện trực quan ý hiểu của developer đối với spec => Đọc test case chúng ta có thể hiểu được bối cảnh của logic, các hành vi (behavior) và kêt quả xử lý mong muốn đạt được của logic. Ở bước này, chúng ta cần giữ số lượng test method tối thiểu mà vẫn thể hiện được đầy đủ các unit test, với tên method rõ ràng. Như vậy developer sau có thể dễ dàng chỉnh sửa code test hoặc bổ sung code test do có sự thay đổi từ spec.
+
+Unit test hỗ trợ rất tốt việc refactor source code, vì nó đảm bảo source code sau khi refactor vẫn đáp ứng đủ các yêu cầu requirement đề ra, nếu chúng ta có thể pass tất cả các test case và bộ unit test case là đầy đủ.
+
+Tuy nhiên, unit test không thể trợ giúp các mục đích sau:
+
+Vì đơn giản, unit test là các kịch bản, các hành vi của các thành phần lập trình được viết theo spec và theo ý hiểu của người lập trình. Chúng ta không thể mong chờ unit test xác định được hoàn toàn code chạy chính xác hay chưa. Vì unit test chỉ hỗ trợ xác định tính đúng đắn của các unit lập trình một cách độc lập. Khi kết hợp các class, các module lại với nhau, chúng ta có thể gặp rất nhiều các loại lỗi khác uni test không thể bao phủ hết được. Đặc biệt các yêu cầu phi chức năng thì không thể yêu cầu unit test xác minh được.
+
+Với unit test, chúng ta có thể tránh được hầu hết các lỗi đơn giản của chương trình. Nhưng với các lỗi phức tạp khác thì unit test không thể trợ giúp gì cho bạn được.
+
+
+Nếu bạn viết sai ngày từ công đoạn viết unit test, thì chắc chắn rằng code của bạn cũng sẽ sai và unit test không thể trợ giúp gì cho bạn trong trường hợp này, Việc đầu tiên bạn phải làm là correct lại code unit test và chỉnh sửa lại code thực thi sau đó. Việc chỉnh sửa này sẽ tránh cho tương lai bạn không còn bị những lỗi tương tự xảy ra nữa. Nhưng một cách khách quan thì unit test bó tay với trường hợp này. => Unit test method cũng cần được review một cách kĩ lưỡng.
+
+II>Acceptance Testing 
+Acceptance testing - Kiểm thử chấp nhận, là một kỹ thuật kiểm thử được thực hiện để xác định hệ thống phần mềm có đạt được những yêu cầu kỹ thuật hay không.
+
+Mục đích chính của Kiểm thử này là để đánh giá hệ thống với những yêu cầu của doanh nghiệp và xác nhận nếu hệ thống đáp ứng được những tiêu chí yêu cầu để chuyển đến người dùng cuối.
+
+Kiểm thử chấp nhận có nhiều dạng như sau:
+	Kiểm thử chấp nhận người dùng
+	Kiểm thử chấp nhận doanh nghiệp
+	Kiểm thử Alpha
+	Kiểm thử Beta
+Kiểm thử phần mềm trong chu trình phát triển phần mềm
+	Các trường hợp kiểm thử chấp nhận đều được thử hiện với dữ liệu mẫu hoặc một kịch bản kiểm thử, sau đó kết quả được so sánh với kịch bản mong đợi.
+Tiêu chí chấp nhận
+	Tiêu chí chấp nhận được xác định trên cơ sở những thuộc tính cơ bản sau:
+		Chức năng đầy đủ và chính xác
+		Toàn vẹn dữ liệu
+		Chuyển đổi dữ liệu
+		Khả năng sử dụng
+		Hiệu suất
+		Tính kịp thời
+		Bảo mật và Khả dụng
+		Khả năng cài đặt và nâng cấp
+		Khả năng mở rộng quy mô
+		Tài liệu
+Kế hoạch kiểm thử Chấp nhận - Các thuộc tính
+	Các hoạt động kiểm thử chấp nhận được thực hiện trong các giai đoạn. Đầu tiên, các kiểm thử cơ bản được thực hiện, và nếu kết quả đạt yêu cầu thì sẽ thực hiện thêm những kịch bản phức tập hơn nữa.
+
+Kế hoạch kiểm thử chấp nhận có những thuộc tính sau:
+		Giới thiệu
+		Danh mục Kiểm thử chấp nhận
+		Môi trường hoạt động
+		ID trường hợp kiểm thử
+		Tiêu đề của bài kiểm thử
+		Đối tượng kiểm thử
+		Thủ tục kiểm thử
+		Lịch kiểm thử
+		Các tài nguyên
+
+
+Các hoạt động Kiểm thử chấp nhận được thiết kế để đi đến một trong các kết luận sau:
+		Chấp nhận hệ thống để phân phối
+		Chấp nhận hệ thống sau khi chỉnh sửa những yêu cầu được đưa ra.
+		Không chấp nhận hệ thống.
+Báo cáo Kiểm thử chấp nhận - Các thuộc tính
+	Các báo cáo Kiểm thử chấp nhận có các thuộc tính sau:
+		Số nhận dạng báo cáo
+		Tóm tắt các kết quả
+		Các biến thể
+		Các khuyến nghị
+		Tóm tắt danh sách những việc cần làm (To-DO List)
+		Quyết định phê duyệt.
+
+III>Stability Testing
+Stability testing là gì?
+	Stability testing là khả năng duy trì hoạt động của sản phẩm xuyên suốt và vượt quá thời hạn sử dụng của nó, mà không hỏng hoặc xảy ra lỗi. Đây là 1 kỹ thuật non-functional, với mục đích đòi hỏi khả năng chịu tải của phần mềm tới mức tối đa. Trong quá trình xác định nó hoạt động tốt thế nào dưới tải ở mức chấp nhận được, mức đỉnh, các tải được tạo ra đột ngột, với số lượng dữ liệu lớn được xử lý… Stability testing được thực hiện để kiểm tra hiệu quả của 1 sản phẩm được phát triển vượt qua mức hoạt động bình thường, hay tới 1 điểm dừng. Có ý nghĩa quan trọng hơn là trong việc xử lý lỗi, độ tin cậy của phần mềm, khả năng chịu tải và khả năng mở rộng của 1 sản phẩm dưới tải lớn chứ không phải là kiểm tra cách hoạt động của hệ thống trong các hoàn cảnh bình thường.
+Tại sao phải thực hiện Stability testing?
+	Loại testing này giúp user hiểu được cách thức hệ thống sẽ làm việc trong các tình huống thực tế.
+
+	Do đó, Stability testing cho phép bạn kiểm tra:
+
+	Ước lượng độ tin cậy trong sự ổn định của hệ thống của bạn đang thử nghiệm
+	Đảm bảo rằng hệ thống của bạn có thể xử lý các chương trình lớn
+	Theo dõi hiệu quả của hệ thống của bạn
+	Kiểm tra hệ thống ổn định theo yêu cầu
+	Nó đóng 1 vai trò quan trọng trong phát triển sản phẩm vì nó được sử dụng để xác định những hạn chế của 1 sản phẩm phần mềm đang thử nghiệm trước khi nó được released hoặc những phạm vi cải tiến hơn trước khi sản phẩm goes live hay ở Production. 1 ví dụ rất phổ biến của kỹ thuật Stability testing là
+
+	Các cổng mua sắm trực tuyến: Stability testing sẽ kiểm tra cách các website sẽ hoạt động khi:
+
+	Lượng dữ liệu nhập vào lớn ở giờ cao điểm
+	Số lượt truy cập ở 1 thời điểm nhất định
+	Vấn đề page load ở cùng 1 thời điểm
+	Cách vận hành của hệ thống
+	Phản ứng của hệ thống và nhiều hơn nữa buộc phải trải nghiệm dưới Stability testing
+
+IV>Automation Testing
+1. Khái niệm
+Trong lĩnh vực kiểm thử phần mềm, thì kiểm thử tự động hay còn gọi là Automation testing đóng một vai trò quan trọng góp phần nâng cao năng suất kiểm thử, giảm thiểu lỗi cũng như sự nhàm chán với việc kiểm thử bằng tay trong một thời gian dài hoặc lặp đi lặp lại.
+
+Kiểm thử tự động là một quá trình xử lý tự động các bước thực hiện một test case. Kiểm thử tự động được thực hiện bởi phần mềm kiểm thử tự động - hay còn gọi là Automation Testing Tool. Một số phần mềm kiểm thử tự động nổi tiếng hiện nay như:
+
+	Quick Test Profressional - (HP)
+	Selenium
+	Test Architect - (LogiGear)
+	Ranorex
+	Visual Studio CodedUI Testing
+	TestComplete (SmartBear)
+	SOAPUI - Web Services Testing (SmartBear)
+2>Cách mạng công nghiệp lần thứ tư đánh dấu kỷ nguyên vạn vật kết nối Internet. Nó xảy ra dựa trên sự hội tụ của nhiều công nghệ trong đó có công nghệ cốt lõi có công nghệ thông tin với sự phát triển không ngừng của công nghệ Internet từ thời kỳ kết nối nội dung như email đến mạng xã hội, Internet vạn vật, Internet kết nối thiết bị máy móc kết nối quá trình vận hành của các nhà máy. Ngoài công nghệ cốt lõi còn có sự hội tụ của công nghệ in 3D, công nghệ vật liệu tiên tiến, công nghệ lưu trữ…
+
+Hiện nay, nền công nghiệp 4.0 đang phát triển mạnh mẽ, kéo theo sự phát triển của rất nhiều ngành nghề, đặc biệt là ngành công nghệ thông tin. Do đó, yêu cầu về nhân lực trong mảng này cũng đòi hỏi cac ứng viên cần phải có kỹ năng tốt hơn nữa về lập trình, technical, các kỹ năng về automation....
+
+Nếu search trên các trang mạng tuyển dụng lớn như ITviec, Vietnamworks, LinkIn, Indeed, Dice, Monster, CareerBuilder … thì bạn sẽ thấy có vô vàn kết quả với các từ khóa tìm kiếm như:
+
+	Test Automation Engineer
+	Automation Developer
+	Automation Testing/Automation Tester
+	QA Automation Engineer
+	Software Development Engineer in Test (SDET)
+Từ đây, bạn có thể thấy được nhu cầu tuyển một QA có kiến thức và kinh nghiệm về automation test là rất lớn. Do đó, đủ để hiểu automation test sẽ là tiềm năng lớn cho tương lai của mảng Test nói riêng và công nghệ thông tin nói chung.
